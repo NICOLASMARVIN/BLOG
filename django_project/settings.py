@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-_s6p*&zwb^+8b&8j%$grz_q_v&r=s+9h2v81!o51ccf0x@akm-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".herokuapp.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -36,14 +36,17 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",  # For serving static files in development
     "django.contrib.staticfiles",
     "blog.apps.BlogConfig",  # Custom app
     "accounts.apps.AccountsConfig",  # Custom app for user accounts
+
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # For serving static files in production
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -119,6 +122,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]  # Directory for static files
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory for collected static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # For production static files handling
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
